@@ -19,11 +19,6 @@ class Sequence:
             task['step'] = step + 1
             task['seq_size'] = sequence_size
 
-    def get_record(self):
-        s = self.sequence.copy()
-        s['tasks'] = json.dumps(s['tasks'])
-        return s
-
     def get_id(self):
         return self.sequence['id']
 
@@ -34,3 +29,8 @@ class Sequence:
         task = Task()
         task.from_dict(self.sequence['tasks'][0])
         return task
+
+    def get_record(self):
+        s = self.sequence.copy()
+        s['tasks'] = json.dumps(s['tasks'])
+        return s
