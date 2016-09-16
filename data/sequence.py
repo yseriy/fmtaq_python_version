@@ -2,35 +2,44 @@ import json
 import uuid
 from data.task import Task
 
-
 class Sequence:
 
     def __init__(self):
-        self.sequence = {}
+        self.id = None
+        self.user_id = None
+        self.service_type = None
+        self.type = None
+        self.status = None
+        self.command = None
+        self.args = None
+        self.tasks = []
+
+    def _id(self):
+        return str(uuid.uuid4())
 
     def from_string(self, string):
-        self.sequence = json.loads(string)
-        self.sequence['id'] = str(uuid.uuid1())
-        sequence_size = len(self.sequence['tasks'])
+        sequence = json.loads(string)
 
-        step = 0
-        for task in self.sequence['tasks']:
-            task['seq_id'] = self.sequence['id']
-            task['step'] = step + 1
-            task['seq_size'] = sequence_size
+        self.id = self._id()
+        self.user_id = sequence['user_id']
+        self.service_type = sequence['service_type']
+        self.type = sequence['type']
+        self.status = sequence['status']
+        self.command = sequence['command']
+        self.args = sequence['args']
 
-    def get_id(self):
-        return self.sequence['id']
+        for task_index in sequence['tasks']:
+            task = Task()
+            task.seq_id = self.id
+            task.queue = task_index['queue']
+            task.command = task_index['command']
+            task.args = task_index['args']
+            self.tasks.append(task)
 
-    def get_type(self):
-        return self.sequence['type']
+        for task in self.tasks:
+            task.id = self._id()
 
-    def get_first_task(self):
-        task = Task()
-        task.from_dict(self.sequence['tasks'][0])
-        return task
+        for i in range(len(self.tasks) - 1):
+            self.tasks[i].next_task_id = self.tasks[i + 1].id
 
-    def get_record(self):
-        s = self.sequence.copy()
-        s['tasks'] = json.dumps(s['tasks'])
-        return s
+        return self
