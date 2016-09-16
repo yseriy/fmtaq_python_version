@@ -19,6 +19,7 @@ class Result:
 
         if 'return_value' in result:
             self.return_value = result['return_value']
+
         if 'error_text' in result:
             self.error_text = result['error_text']
 
