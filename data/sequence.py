@@ -14,13 +14,13 @@ class Sequence:
         self.args = None
         self.tasks = []
 
-    def _id(self):
+    def _get_id(self):
         return str(uuid.uuid4())
 
     def from_string(self, string):
         sequence = json.loads(string)
 
-        self.id = self._id()
+        self.id = self._get_id()
         self.user_id = sequence['user_id']
         self.service_type = sequence['service_type']
         self.type = sequence['type']
@@ -37,7 +37,7 @@ class Sequence:
             self.tasks.append(task)
 
         for task in self.tasks:
-            task.id = self._id()
+            task.id = self._get_id()
 
         for i in range(len(self.tasks) - 1):
             self.tasks[i].next_task_id = self.tasks[i + 1].id

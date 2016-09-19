@@ -22,13 +22,3 @@ class Task:
         self.next_task_id = task['next_task_id']
 
         return self
-
-    def from_tuple(self, tpl):
-        self.id = tpl[0]
-        self.seq_id = tpl[1]
-        self.queue = tpl[2]
-        self.command = tpl[3]
-        self.args = tpl[4]
-        self.next_task_id = tpl[5]
-
-        return self
