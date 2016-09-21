@@ -22,3 +22,15 @@ class Task:
         self.next_task_id = task['next_task_id']
 
         return self
+
+    def to_string(self):
+        task = {
+            'id'           : self.id,
+            'seq_id'       : self.seq_id,
+            'queue'        : self.queue,
+            'command'      : self.command,
+            'args'         : self.args,
+            'next_task_id' : self.next_task_id,
+        }
+
+        return json.dumps(task)
